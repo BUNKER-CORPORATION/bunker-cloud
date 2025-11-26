@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev:*)",
+      "Bash(npm install:*)",
+      "Bash(del \"D:\\code-dev\\bunker-corporation\\bunkercloud\\bunker-cloud-web\\src\\lib\\supabase.ts\")",
+      "WebSearch",
+      "WebFetch(domain:www.hostinger.com)",
+      "WebFetch(domain:vercel.com)",
+      "WebFetch(domain:www.digitalocean.com)",
+      "Bash(explorer \"D:\\code-dev\\bunker-corporation\\bunkercloud\\bunker-cloud-web\\public\")",
+      "Bash(start explorer \"D:\\code-dev\\bunker-corporation\\bunkercloud\\bunker-cloud-web\\public\")",
+      "Bash(echo $env:USERPROFILE)",
+      "Bash(explorer .)",
+      "Bash(nul)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
