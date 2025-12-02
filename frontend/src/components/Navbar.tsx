@@ -1,8 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Search, ChevronDown } from 'lucide-react';
+import { Menu, X, Search, ChevronDown, Sun, Moon } from 'lucide-react';
 import { memo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useNavigation } from '../hooks/useNavigation';
+import { useTheme } from '../contexts/ThemeContext';
 import {
   getAvailableServices,
   getCurrentService,
@@ -19,6 +20,7 @@ import {
  */
 const Navbar = () => {
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
   const {
     mobileMenuOpen,
     servicesDropdownOpen,
@@ -38,7 +40,7 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200"
+        className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800"
         role="navigation"
         aria-label="Main navigation"
       >
@@ -47,7 +49,7 @@ const Navbar = () => {
             {/* Left: Logo and Main Navigation */}
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
-                <Link to="/" className="flex items-center gap-2 text-gray-900" aria-label="Bunker Cloud Home">
+                <Link to="/" className="flex items-center gap-2 text-gray-900 dark:text-white" aria-label="Bunker Cloud Home">
                   {/* BUNKER - appears first */}
                   <motion.span
                     initial={{ opacity: 0, x: -20 }}
@@ -63,7 +65,7 @@ const Navbar = () => {
                     initial={{ opacity: 0, scaleY: 0 }}
                     animate={{ opacity: 1, scaleY: 1 }}
                     transition={{ duration: 0.3, delay: 0.3 }}
-                    className="text-gray-400"
+                    className="text-gray-400 dark:text-gray-600"
                     aria-hidden="true"
                   >
                     |
@@ -78,7 +80,7 @@ const Navbar = () => {
                   onClick={toggleServicesDropdown}
                   onMouseEnter={openServicesDropdown}
                   onMouseLeave={closeServicesDropdown}
-                  className="flex items-center gap-1 text-base font-normal text-gray-900 hover:text-gray-700 transition-colors"
+                  className="flex items-center gap-1 text-base font-normal text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
                   aria-expanded={servicesDropdownOpen}
                   aria-haspopup="true"
                   aria-label={`Switch from ${currentService?.name} to other Bunker services`}
@@ -101,7 +103,7 @@ const Navbar = () => {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: 0.9 + index * 0.1 }}
-                    className="text-sm text-gray-700 hover:text-gray-900 transition-colors"
+                    className="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                     role="menuitem"
                   >
                     {link.label}
@@ -113,46 +115,82 @@ const Navbar = () => {
             {/* Right: Search, Actions and CTA */}
             <div className="hidden xl:flex items-center gap-4">
               <button
-                className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
+                className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 aria-label="Search"
               >
                 <Search size={18} aria-hidden="true" />
               </button>
 
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+              >
+                {theme === 'light' ? (
+                  <Moon size={18} aria-hidden="true" />
+                ) : (
+                  <Sun size={18} aria-hidden="true" />
+                )}
+              </button>
+
               {SECONDARY_NAV_LINKS.map((link) => (
-                <a
-                  key={link.id}
-                  href={link.href}
-                  className="text-sm text-gray-700 hover:text-gray-900 transition-colors"
-                >
-                  {link.label}
-                </a>
+                link.href.startsWith('/') ? (
+                  <Link
+                    key={link.id}
+                    to={link.href}
+                    className="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={link.id}
+                    href={link.href}
+                    className="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                )
               ))}
 
-              <Link to="/signup">
+              <a href="#pricing">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="bg-gray-900 text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 transition-colors"
+                  className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors"
                   aria-label="Sign up for Bunker Cloud"
                 >
                   Get started with Bunker
                 </motion.button>
-              </Link>
+              </a>
 
-              <Link
-                to="/login"
-                className="text-sm text-gray-700 hover:text-gray-900 transition-colors"
+              <a
+                href="#pricing"
+                className="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
                 Sign in
-              </Link>
+              </a>
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="xl:hidden">
+            <div className="xl:hidden flex items-center gap-2">
+              {/* Mobile Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+              >
+                {theme === 'light' ? (
+                  <Moon size={20} aria-hidden="true" />
+                ) : (
+                  <Sun size={20} aria-hidden="true" />
+                )}
+              </button>
+
               <button
                 onClick={toggleMobileMenu}
-                className="text-gray-900 p-2"
+                className="text-gray-900 dark:text-white p-2"
                 aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={mobileMenuOpen}
                 aria-controls="mobile-menu"
@@ -176,20 +214,20 @@ const Navbar = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2 }}
-              className="xl:hidden bg-white border-t border-gray-200"
+              className="xl:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800"
               role="menu"
             >
               <div className="px-4 py-6 space-y-4">
                 {/* Mobile Services Menu */}
-                <div className="border-b border-gray-200 pb-4">
-                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
+                <div className="border-b border-gray-200 dark:border-gray-800 pb-4">
+                  <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
                     Bunker Services
                   </div>
                   {availableServices.map((service) => (
                     <a
                       key={service.id}
                       href={service.href}
-                      className="block py-2 text-sm text-gray-700 hover:text-gray-900 transition-colors"
+                      className="block py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                       onClick={closeMobileMenu}
                       role="menuitem"
                     >
@@ -202,7 +240,7 @@ const Navbar = () => {
                   <a
                     key={link.id}
                     href={link.href}
-                    className="block text-sm text-gray-700 hover:text-gray-900 transition-colors"
+                    className="block text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                     onClick={closeMobileMenu}
                     role="menuitem"
                   >
@@ -210,32 +248,44 @@ const Navbar = () => {
                   </a>
                 ))}
 
-                <div className="border-t border-gray-200 pt-4 space-y-4">
+                <div className="border-t border-gray-200 dark:border-gray-800 pt-4 space-y-4">
                   {SECONDARY_NAV_LINKS.map((link) => (
-                    <a
-                      key={link.id}
-                      href={link.href}
-                      className="block text-sm text-gray-700 hover:text-gray-900 transition-colors"
-                      onClick={closeMobileMenu}
-                      role="menuitem"
-                    >
-                      {link.label}
-                    </a>
+                    link.href.startsWith('/') ? (
+                      <Link
+                        key={link.id}
+                        to={link.href}
+                        className="block text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                        onClick={closeMobileMenu}
+                        role="menuitem"
+                      >
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a
+                        key={link.id}
+                        href={link.href}
+                        className="block text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                        onClick={closeMobileMenu}
+                        role="menuitem"
+                      >
+                        {link.label}
+                      </a>
+                    )
                   ))}
 
-                  <Link to="/signup" onClick={closeMobileMenu}>
-                    <button className="w-full bg-gray-900 text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 transition-colors">
+                  <a href="#pricing" onClick={closeMobileMenu}>
+                    <button className="w-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors">
                       Get started with Bunker
                     </button>
-                  </Link>
+                  </a>
 
-                  <Link
-                    to="/login"
+                  <a
+                    href="#pricing"
                     onClick={closeMobileMenu}
-                    className="block text-center text-sm text-gray-700 hover:text-gray-900 transition-colors"
+                    className="block text-center text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                   >
                     Sign in
-                  </Link>
+                  </a>
                 </div>
               </div>
             </motion.div>
@@ -261,7 +311,7 @@ const Navbar = () => {
               transition={{ duration: 0.2 }}
               onMouseEnter={openServicesDropdown}
               onMouseLeave={closeServicesDropdown}
-              className="fixed top-16 left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-lg overflow-hidden"
+              className="fixed top-16 left-0 right-0 z-40 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-lg overflow-hidden"
               role="menu"
               aria-label="Bunker services"
             >
@@ -271,19 +321,19 @@ const Navbar = () => {
                     <a
                       key={service.id}
                       href={service.href}
-                      className="block p-3 rounded-lg hover:bg-gray-50 transition-colors group focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2"
+                      className="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                       onClick={closeAllMenus}
                       role="menuitem"
                       aria-label={`Switch to ${service.name}: ${service.description}`}
                     >
-                      <div className="text-sm font-semibold text-gray-900 group-hover:text-gray-700 mb-1 relative inline-block">
+                      <div className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-gray-700 dark:group-hover:text-gray-300 mb-1 relative inline-block">
                         {service.name}
                         <span
-                          className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-gray-900 group-hover:w-full transition-all duration-300 origin-left"
+                          className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-gray-900 dark:bg-white group-hover:w-full transition-all duration-300 origin-left"
                           aria-hidden="true"
                         />
                       </div>
-                      <div className="text-xs text-gray-600">{service.description}</div>
+                      <div className="text-xs text-gray-600 dark:text-gray-400">{service.description}</div>
                     </a>
                   ))}
                 </div>

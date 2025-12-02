@@ -1,0 +1,47 @@
+{
+  "name": "@bunker-cloud/auth-service",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Bunker Cloud Authentication Service",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint src/**/*.ts",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "fastify": "^4.28.1",
+    "@fastify/cors": "^9.0.1",
+    "@fastify/helmet": "^11.1.1",
+    "@fastify/rate-limit": "^9.1.0",
+    "@fastify/cookie": "^9.3.1",
+    "@fastify/jwt": "^8.0.1",
+    "pg": "^8.12.0",
+    "redis": "^4.7.0",
+    "bcrypt": "^5.1.1",
+    "zod": "^3.23.8",
+    "nanoid": "^5.0.7",
+    "otplib": "^12.0.1",
+    "qrcode": "^1.5.4",
+    "nodemailer": "^6.9.14",
+    "pino": "^9.3.2",
+    "pino-pretty": "^11.2.2",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "@types/pg": "^8.11.6",
+    "@types/bcrypt": "^5.0.2",
+    "@types/nodemailer": "^6.4.15",
+    "@types/qrcode": "^1.5.5",
+    "typescript": "^5.5.4",
+    "tsx": "^4.17.0",
+    "vitest": "^2.0.5",
+    "eslint": "^9.9.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

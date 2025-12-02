@@ -1,10 +1,9 @@
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 export default function FinalCTA() {
   return (
-    <section className="py-24 md:py-32 bg-gray-50">
+    <section className="py-24 md:py-32 bg-gray-50 dark:bg-gray-900">
       <div className="w-full mx-auto px-12 lg:px-24 xl:px-32">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -19,6 +18,8 @@ export default function FinalCTA() {
               src="/ready-to-get-started.webp"
               alt="Global Network"
               className="w-full h-full object-cover"
+              loading="lazy"
+              decoding="async"
             />
             <div className="absolute inset-0 bg-gradient-to-br from-gray-900/85 via-gray-900/80 to-gray-800/85" />
           </div>
@@ -39,7 +40,7 @@ export default function FinalCTA() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/signup">
+              <a href="#pricing">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -48,7 +49,7 @@ export default function FinalCTA() {
                   Start Free Trial
                   <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
                 </motion.button>
-              </Link>
+              </a>
               <a href="#pricing">
                 <motion.button
                   whileHover={{ scale: 1.02 }}

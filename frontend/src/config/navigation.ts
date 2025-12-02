@@ -64,19 +64,18 @@ export const BUNKER_SERVICES: BunkerService[] = [
 
 // Main navigation links
 export const MAIN_NAV_LINKS: NavLink[] = [
-  { id: 'explore', label: 'Explore', href: '#explore' },
-  { id: 'products', label: 'Products', href: '#products' },
+  { id: 'features', label: 'Features', href: '#features' },
   { id: 'solutions', label: 'Solutions', href: '#solutions' },
+  { id: 'security', label: 'Security', href: '#security' },
   { id: 'pricing', label: 'Pricing', href: '#pricing' },
-  { id: 'partners', label: 'Partners', href: '#partners' },
-  { id: 'resources', label: 'Resources', href: '#resources' },
 ];
 
 // Secondary navigation links
 export const SECONDARY_NAV_LINKS: NavLink[] = [
-  { id: 'learn', label: 'Learn', href: '#learn' },
-  { id: 'support', label: 'Support', href: '#support' },
-  { id: 'sales', label: 'Contact Sales', href: '#sales' },
+  { id: 'docs', label: 'Docs', href: '/docs' },
+  { id: 'resources', label: 'Resources', href: '/resources' },
+  { id: 'support', label: 'Support', href: '/support' },
+  { id: 'sales', label: 'Contact Sales', href: '/contact-sales' },
 ];
 
 // Get services excluding the current one

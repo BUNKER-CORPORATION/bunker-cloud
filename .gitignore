@@ -1,0 +1,39 @@
+# Environment files
+.env
+.env.local
+.env.production
+!.env.example
+
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Build outputs
+dist/
+build/
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker volumes (don't commit data)
+postgres_data/
+redis_data/
+minio_data/
+
+# Logs
+logs/
+*.log
+
+# Certificates
+*.pem
+*.key
+*.crt
+
+# Package locks (optional - comment out if you want to track them)
+# package-lock.json

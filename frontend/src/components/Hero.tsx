@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { ChevronRight, Send } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import ChatInterface from './ChatInterface';
 
@@ -25,6 +24,8 @@ export default function Hero() {
           src="/hero-image-3.webp"
           alt="Bunker Cloud Background"
           className="w-full h-full object-cover"
+          loading="eager"
+          decoding="async"
         />
         {/* Dark overlay for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/20" />
@@ -71,7 +72,7 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Link to="/signup">
+              <a href="#pricing">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -79,7 +80,7 @@ export default function Hero() {
                 >
                   Start Free Trial
                 </motion.button>
-              </Link>
+              </a>
               <a href="#pricing">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
@@ -99,7 +100,7 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="hidden lg:block space-y-4"
           >
-            <div className="bg-white rounded-2xl shadow-2xl pb-4 pt-2 pl-2 w-full relative min-h-[180px]">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl pb-4 pt-2 pl-2 w-full relative min-h-[180px]">
               {/* Input field */}
               <div className="mb-4">
                 <textarea
@@ -113,19 +114,19 @@ export default function Hero() {
                   }}
                   placeholder="Ask anything about Bunker Cloud"
                   rows={3}
-                  className="w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-0 text-gray-900 placeholder-gray-400 resize-none text-base overflow-hidden"
+                  className="w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-0 text-gray-900 dark:text-white bg-transparent placeholder-gray-400 dark:placeholder-gray-500 resize-none text-base overflow-hidden"
                 />
               </div>
 
               {/* Disclaimer - bottom left */}
-              <p className="absolute bottom-4 left-4 text-xs text-gray-500">
+              <p className="absolute bottom-4 left-4 text-xs text-gray-500 dark:text-gray-400">
                 Built with Bunker Enterprise, you must be 18+ to use.
               </p>
 
               {/* Send button - bottom right */}
               <button
                 onClick={handleSendMessage}
-                className="absolute bottom-4 right-4 p-2 rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition-colors shadow-lg"
+                className="absolute bottom-4 right-4 p-2 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors shadow-lg"
               >
                 <Send size={20} />
               </button>

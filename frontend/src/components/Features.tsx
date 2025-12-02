@@ -102,10 +102,10 @@ function FeatureCard({ feature, index }: { feature: typeof features[0], index: n
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.08 }}
       onMouseMove={handleMouseMove}
-      className="group relative rounded-2xl border border-gray-200 bg-white shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col h-full"
+      className="group relative rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col h-full"
     >
       {/* Spotlight Effect */}
       <motion.div
@@ -135,42 +135,46 @@ function FeatureCard({ feature, index }: { feature: typeof features[0], index: n
         }}
       />
 
-      {/* Image Section - Darkened like Hero Overlay */}
-      <div className="relative h-64 overflow-hidden bg-gray-900">
-        <img
-          src={feature.image}
-          alt={feature.title}
-          className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
-        
-        {/* Hero-style Tag */}
-        <div className="absolute top-6 left-6 z-20">
-          <span className="inline-block px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded text-[10px] font-bold tracking-widest text-white uppercase shadow-sm">
-            {feature.tag}
-          </span>
-        </div>
+      {/* Image Section with padding */}
+      <div className="p-3 pb-0">
+        <div className="relative aspect-video overflow-hidden rounded-xl bg-gray-900">
+          <img
+            src={feature.image}
+            alt={feature.title}
+            className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+            loading="lazy"
+            decoding="async"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
 
-        {/* Icon floating like a satellite */}
-        <div className="absolute bottom-4 right-4 z-20 p-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white group-hover:bg-white group-hover:text-blue-600 transition-all duration-300 shadow-sm">
-          <Icon className="w-6 h-6" />
+          {/* Hero-style Tag */}
+          <div className="absolute top-4 left-4 z-20">
+            <span className="inline-block px-3 py-1.5 bg-gray-900/70 backdrop-blur-md border border-white/10 rounded-md text-[10px] font-bold tracking-widest text-white uppercase shadow-md">
+              {feature.tag}
+            </span>
+          </div>
+
+          {/* Icon floating like a satellite */}
+          <div className="absolute bottom-4 right-4 z-20 p-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white group-hover:bg-white group-hover:text-blue-600 transition-all duration-300 shadow-sm">
+            <Icon className="w-6 h-6" />
+          </div>
         </div>
       </div>
 
       {/* Content Section */}
       <div className="p-8 flex flex-col flex-grow relative z-20">
-        <h3 className="text-2xl font-bold text-gray-900 mb-4 tracking-tight group-hover:text-blue-600 transition-colors">
+        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
           {feature.title}
         </h3>
-        <p className="text-gray-500 text-base leading-relaxed mb-8 flex-grow border-l-2 border-gray-100 pl-4">
+        <p className="text-gray-500 dark:text-gray-400 text-base leading-relaxed mb-8 flex-grow border-l-2 border-gray-100 dark:border-gray-700 pl-4">
           {feature.description}
         </p>
 
         {/* Hero-inspired Button */}
         <div className="pt-2 mt-auto">
-          <a 
+          <a
             href={feature.link}
-            className="inline-flex items-center justify-between w-full px-6 py-4 bg-gray-50 rounded-xl text-sm font-semibold text-gray-900 hover:bg-gray-900 hover:text-white transition-all duration-300 group/btn shadow-sm"
+            className="inline-flex items-center justify-between w-full px-6 py-4 bg-gray-50 dark:bg-gray-700 rounded-xl text-sm font-semibold text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900 transition-all duration-300 group/btn shadow-sm"
           >
             <span>{feature.linkText}</span>
             <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
@@ -201,55 +205,56 @@ export default function Features() {
   );
 
   return (
-    <section id="features" className="py-24 md:py-32 bg-gray-50 border-t border-gray-200 relative overflow-hidden">
+    <section id="features" className="py-24 md:py-32 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 relative overflow-hidden">
       {/* Tech Grid Background Pattern */}
-      <div className="absolute inset-0 z-0 opacity-[0.03]" 
-           style={{ 
-             backgroundImage: `radial-gradient(#000 1px, transparent 1px)`, 
-             backgroundSize: '24px 24px' 
-           }} 
+      <div className="absolute inset-0 z-0 opacity-[0.03] dark:opacity-[0.05]"
+           style={{
+             backgroundImage: `radial-gradient(currentColor 1px, transparent 1px)`,
+             backgroundSize: '24px 24px'
+           }}
       />
       
-      <div className="w-full mx-auto px-16 sm:px-24 md:px-32 lg:px-48 xl:px-64 2xl:px-80 relative z-10">
+      <div className="w-full mx-auto px-6 md:px-12 lg:px-24 xl:px-32 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6"
+          className="mb-12 flex items-center justify-between gap-6"
         >
-          <div>
-            <p className="text-sm font-mono font-semibold text-blue-600 uppercase tracking-wider mb-3 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+          {/* Left Arrow */}
+          <button
+            onClick={prevSlide}
+            className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all disabled:opacity-50 shadow-sm hover:shadow-md active:scale-95"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+
+          {/* Centered Text */}
+          <div className="text-center flex-1">
+            <p className="text-sm font-mono font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-3 flex items-center gap-2 justify-center">
+              <span className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse"></span>
               System Capabilities
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
               Mission-Critical Infrastructure
             </h2>
           </div>
 
-          {/* Controls */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={prevSlide}
-              className="p-4 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all disabled:opacity-50 shadow-sm hover:shadow-md active:scale-95"
-              aria-label="Previous slide"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={nextSlide}
-              className="p-4 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all disabled:opacity-50 shadow-sm hover:shadow-md active:scale-95"
-              aria-label="Next slide"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
+          {/* Right Arrow */}
+          <button
+            onClick={nextSlide}
+            className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all disabled:opacity-50 shadow-sm hover:shadow-md active:scale-95"
+            aria-label="Next slide"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {currentFeatures.map((feature, index) => (
-             <FeatureCard key={`${currentIndex}-${index}`} feature={feature} index={index} />
+             <FeatureCard key={feature.title} feature={feature} index={index} />
           ))}
         </div>
         
@@ -260,7 +265,7 @@ export default function Features() {
               key={idx}
               onClick={() => setCurrentIndex(idx)}
               className={`h-1 rounded-full transition-all duration-300 ${
-                idx === currentIndex ? 'w-8 bg-blue-600' : 'w-2 bg-gray-300 hover:bg-gray-400'
+                idx === currentIndex ? 'w-8 bg-blue-600 dark:bg-blue-400' : 'w-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
               }`}
               aria-label={`Go to page ${idx + 1}`}
             />

@@ -1,0 +1,98 @@
+# ===========================================
+# TRAEFIK - Dynamic Middlewares Configuration
+# ===========================================
+
+http:
+  middlewares:
+    # Security Headers
+    security-headers:
+      headers:
+        browserXssFilter: true
+        contentTypeNosniff: true
+        frameDeny: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 31536000
+        customFrameOptionsValue: "SAMEORIGIN"
+        referrerPolicy: "strict-origin-when-cross-origin"
+        customResponseHeaders:
+          X-Powered-By: "Bunker Cloud"
+          Server: "Bunker Cloud"
+
+    # Rate Limiting - Standard
+    rate-limit-standard:
+      rateLimit:
+        average: 100
+        burst: 50
+        period: 1m
+
+    # Rate Limiting - Strict (for auth endpoints)
+    rate-limit-strict:
+      rateLimit:
+        average: 10
+        burst: 5
+        period: 1m
+
+    # Rate Limiting - API
+    rate-limit-api:
+      rateLimit:
+        average: 1000
+        burst: 200
+        period: 1m
+
+    # Compress responses
+    compress:
+      compress:
+        excludedContentTypes:
+          - text/event-stream
+
+    # Retry failed requests
+    retry:
+      retry:
+        attempts: 3
+        initialInterval: 100ms
+
+    # Strip path prefix
+    strip-api-prefix:
+      stripPrefix:
+        prefixes:
+          - "/api/v1"
+
+    # Add request ID header
+    request-id:
+      headers:
+        customRequestHeaders:
+          X-Request-ID: "{{uuid}}"
+
+    # IP Whitelist (for admin endpoints)
+    ip-whitelist-admin:
+      ipWhiteList:
+        sourceRange:
+          - "127.0.0.1/32"
+          - "10.0.0.0/8"
+          - "172.16.0.0/12"
+          - "192.168.0.0/16"
+
+    # Chain for public API
+    api-chain:
+      chain:
+        middlewares:
+          - security-headers
+          - rate-limit-api
+          - compress
+
+    # Chain for auth endpoints
+    auth-chain:
+      chain:
+        middlewares:
+          - security-headers
+          - rate-limit-strict
+          - compress
+
+    # Chain for dashboard/admin
+    admin-chain:
+      chain:
+        middlewares:
+          - security-headers
+          - rate-limit-standard
+          - compress

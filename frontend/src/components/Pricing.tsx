@@ -55,7 +55,7 @@ export default function Pricing() {
   const [annual, setAnnual] = useState(false);
 
   return (
-    <section id="pricing" className="py-24 md:py-32 bg-white">
+    <section id="pricing" className="py-24 md:py-32 bg-white dark:bg-gray-950">
       <div className="w-full mx-auto px-12 lg:px-24 xl:px-32">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -64,18 +64,18 @@ export default function Pricing() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">
             Simple, Transparent Pricing
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
             Choose the perfect plan for your needs. All plans include a 30-day money-back guarantee.
           </p>
 
-          <div className="inline-flex items-center gap-3 bg-gray-100 border border-gray-200 rounded-xl p-1">
+          <div className="inline-flex items-center gap-3 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-1">
             <button
               onClick={() => setAnnual(false)}
               className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
-                !annual ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                !annual ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               }`}
             >
               Monthly
@@ -83,11 +83,11 @@ export default function Pricing() {
             <button
               onClick={() => setAnnual(true)}
               className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
-                annual ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                annual ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               }`}
             >
               Annual
-              <span className="ml-2 text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full">Save 20%</span>
+              <span className="ml-2 text-xs bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-2 py-0.5 rounded-full">Save 20%</span>
             </button>
           </div>
         </motion.div>
@@ -103,13 +103,13 @@ export default function Pricing() {
               whileHover={{ y: -4 }}
               className={`relative rounded-2xl p-8 ${
                 plan.popular
-                  ? 'bg-gray-900 text-white border-2 border-gray-900 shadow-soft-lg'
-                  : 'bg-white border border-gray-200 shadow-soft'
+                  ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-2 border-gray-900 dark:border-white shadow-soft-lg'
+                  : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-soft text-gray-900 dark:text-white'
               }`}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <span className="bg-gray-700 text-white px-4 py-1 rounded-full text-xs font-semibold">
+                  <span className="bg-gray-700 dark:bg-gray-800 text-white px-4 py-1 rounded-full text-xs font-semibold">
                     MOST POPULAR
                   </span>
                 </div>
@@ -117,7 +117,7 @@ export default function Pricing() {
 
               <div className="mb-6">
                 <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                <p className={`text-sm ${plan.popular ? 'text-gray-300' : 'text-gray-600'}`}>{plan.description}</p>
+                <p className={`text-sm ${plan.popular ? 'text-gray-300 dark:text-gray-600' : 'text-gray-600 dark:text-gray-400'}`}>{plan.description}</p>
               </div>
 
               <div className="mb-6">
@@ -125,10 +125,10 @@ export default function Pricing() {
                   <span className="text-5xl font-bold">
                     ${annual ? plan.price.annual : plan.price.monthly}
                   </span>
-                  <span className={plan.popular ? 'text-gray-300' : 'text-gray-600'}>/month</span>
+                  <span className={plan.popular ? 'text-gray-300 dark:text-gray-600' : 'text-gray-600 dark:text-gray-400'}>/month</span>
                 </div>
                 {annual && (
-                  <p className={`text-sm mt-1 ${plan.popular ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <p className={`text-sm mt-1 ${plan.popular ? 'text-gray-400 dark:text-gray-500' : 'text-gray-500 dark:text-gray-500'}`}>
                     Billed ${plan.price.annual * 12} annually
                   </p>
                 )}
@@ -139,8 +139,8 @@ export default function Pricing() {
                 whileTap={{ scale: 0.98 }}
                 className={`w-full py-3 rounded-xl font-semibold mb-8 transition-colors ${
                   plan.popular
-                    ? 'bg-white text-gray-900 hover:bg-gray-100'
-                    : 'bg-gray-900 text-white hover:bg-gray-800'
+                    ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'
+                    : 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100'
                 }`}
               >
                 Start Free Trial
@@ -149,10 +149,10 @@ export default function Pricing() {
               <div className="space-y-4">
                 {plan.features.map((feature, idx) => (
                   <div key={idx} className="flex items-start gap-3">
-                    <div className={`rounded-full p-1 mt-0.5 ${plan.popular ? 'bg-gray-700' : 'bg-gray-200'}`}>
-                      <Check size={12} className={plan.popular ? 'text-white' : 'text-gray-700'} />
+                    <div className={`rounded-full p-1 mt-0.5 ${plan.popular ? 'bg-gray-700 dark:bg-gray-200' : 'bg-gray-200 dark:bg-gray-700'}`}>
+                      <Check size={12} className={plan.popular ? 'text-white dark:text-gray-700' : 'text-gray-700 dark:text-gray-300'} />
                     </div>
-                    <span className={`text-sm ${plan.popular ? 'text-gray-300' : 'text-gray-700'}`}>{feature}</span>
+                    <span className={`text-sm ${plan.popular ? 'text-gray-300 dark:text-gray-600' : 'text-gray-700 dark:text-gray-300'}`}>{feature}</span>
                   </div>
                 ))}
               </div>
@@ -167,9 +167,9 @@ export default function Pricing() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-12"
         >
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400">
             Need custom resources?{' '}
-            <a href="#contact" className="text-gray-900 hover:text-gray-700 font-medium underline">
+            <a href="#contact" className="text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300 font-medium underline">
               Contact sales
             </a>
           </p>

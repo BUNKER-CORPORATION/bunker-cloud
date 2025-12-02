@@ -1,24 +1,5 @@
 import { motion } from 'framer-motion';
-import { Shield, Award, Lock, FileCheck, CheckCircle, ArrowRight } from 'lucide-react';
-
-const stats = [
-  {
-    value: '10,000+',
-    label: 'Active Developers'
-  },
-  {
-    value: '35+',
-    label: 'Global Regions'
-  },
-  {
-    value: '99.99%',
-    label: 'Uptime SLA'
-  },
-  {
-    value: 'SOC 2',
-    label: 'Type II Certified'
-  }
-];
+import { Shield, Lock, FileCheck, CheckCircle, ArrowRight } from 'lucide-react';
 
 const customerStories = [
   {
@@ -76,21 +57,22 @@ const securityFeatures = [
 
 export default function TrustSection() {
   return (
-    <section className="py-24 md:py-32 bg-white">
-      <div className="w-full mx-auto px-16 sm:px-24 md:px-32 lg:px-48 xl:px-64 2xl:px-80">
+    <section id="security" className="py-24 md:py-32 bg-white dark:bg-gray-900">
+      <div className="w-full mx-auto px-6 md:px-12 lg:px-24 xl:px-32">
         {/* Customer Stories Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-12"
+          className="mb-12 text-center"
         >
-          <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-3">
-            CUSTOMER STORIES
+          <p className="text-sm font-mono font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-3 flex items-center gap-2 justify-center">
+            <span className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse"></span>
+            Industry Solutions
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-            Trusted by teams worldwide
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
+            Infrastructure for every sector
           </h2>
         </motion.div>
 
@@ -105,59 +87,44 @@ export default function TrustSection() {
               transition={{ duration: 0.4, delay: index * 0.1 }}
               className="group"
             >
-              <div className="bg-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-[0_0_30px_rgba(0,0,0,0.1)] transition-all duration-300 h-full">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-[0_0_30px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 h-full">
                 <div className="flex flex-col h-full">
-                  {/* Image Section */}
-                  <div className="relative h-48 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
-                    <img
-                      src={story.image}
-                      alt={story.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute top-4 left-4">
-                      <span className="inline-block bg-white/90 backdrop-blur-sm text-gray-900 text-xs font-semibold px-3 py-1.5 rounded-md">
-                        {story.tag}
-                      </span>
+                  {/* Image Section with padding */}
+                  <div className="p-3 pb-0">
+                    <div className="relative h-48 overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
+                      <img
+                        src={story.image}
+                        alt={story.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <div className="absolute top-4 left-4">
+                        <span className="inline-block bg-gray-900/70 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-md shadow-md">
+                          {story.tag}
+                        </span>
+                      </div>
+                      {/* Arrow icon - top right on image - appears on hover */}
+                      <a
+                        href={story.link}
+                        className="absolute top-4 right-4 inline-flex items-center text-white hover:text-gray-200 font-medium transition-all duration-300 ease-in opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0"
+                      >
+                        <ArrowRight className="w-5 h-5" />
+                      </a>
                     </div>
-                    {/* Arrow icon - top right on image - appears on hover */}
-                    <a
-                      href={story.link}
-                      className="absolute top-4 right-4 inline-flex items-center text-white hover:text-gray-200 font-medium transition-all duration-300 ease-in opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0"
-                    >
-                      <ArrowRight className="w-5 h-5" />
-                    </a>
                   </div>
 
                   {/* Content Section */}
-                  <div className="p-6 flex flex-col flex-grow bg-gray-50">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  <div className="p-6 flex flex-col flex-grow bg-gray-50 dark:bg-gray-800/50">
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
                       {story.title}
                     </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                       {story.description}
                     </p>
                   </div>
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-24">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="text-center"
-            >
-              <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
-                {stat.value}
-              </div>
-              <div className="text-sm text-gray-600 font-medium">{stat.label}</div>
             </motion.div>
           ))}
         </div>
@@ -168,12 +135,13 @@ export default function TrustSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-12"
+          className="mb-12 text-center"
         >
-          <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-3">
-            SECURITY FEATURES
+          <p className="text-sm font-mono font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-3 flex items-center gap-2 justify-center">
+            <span className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse"></span>
+            Security Features
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
             Built with security in mind
           </h2>
         </motion.div>
@@ -195,6 +163,8 @@ export default function TrustSection() {
                   src="/security-img3.webp"
                   alt="Advanced Encryption"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-900/90 via-gray-900/80 to-gray-900/70 group-hover:from-gray-900/85 transition-colors duration-500" />
               </div>
@@ -236,6 +206,8 @@ export default function TrustSection() {
                   src="/securit-img1.webp"
                   alt="DDoS Protection"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-gray-900/90 via-gray-900/85 to-gray-900/80 group-hover:from-gray-900/85 transition-colors duration-500" />
               </div>
@@ -269,6 +241,8 @@ export default function TrustSection() {
                   src="/security-img2.webp"
                   alt="Automated Backups"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-900/90 via-gray-900/85 to-gray-900/80 group-hover:from-gray-900/85 transition-colors duration-500" />
               </div>
@@ -302,6 +276,8 @@ export default function TrustSection() {
                   src="/security-img4.webp"
                   alt="Access Control"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-900/95 via-gray-900/90 to-gray-900/85 group-hover:from-gray-900/90 group-hover:via-gray-900/85 transition-colors duration-500" />
               </div>
