@@ -1,0 +1,42 @@
+{
+  "name": "@bunker-cloud/sdk",
+  "version": "1.0.0",
+  "description": "Official JavaScript/TypeScript SDK for Bunker Cloud",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "bunker",
+    "cloud",
+    "sdk",
+    "api",
+    "paas"
+  ],
+  "author": "Bunker Corporation",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BUNKER-CORPORATION/bunker-cloud.git",
+    "directory": "sdk"
+  }
+}
