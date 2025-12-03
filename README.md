@@ -23,7 +23,7 @@ Bunker Cloud empowers developers and businesses with reliable, scalable cloud in
 | **Billing** | ✅ Live | Subscription plans, usage tracking, invoices |
 | **Object Storage** | ✅ Live | S3-compatible storage with presigned URLs, bucket management |
 | **Managed Databases** | ✅ Live | PostgreSQL, MySQL, Redis, MongoDB with automated provisioning |
-| **App Platform** | 🚧 Coming Soon | Deploy Docker containers with auto-scaling |
+| **App Platform** | ✅ Live | Deploy Docker containers with custom domains and resource limits |
 | **Serverless Functions** | 📋 Planned | Run code without managing servers |
 | **Container Registry** | 📋 Planned | Private Docker image hosting |
 
@@ -162,6 +162,19 @@ Bunker Cloud empowers developers and businesses with reliable, scalable cloud in
 | `/buckets/:id/presigned/upload` | POST | Get presigned upload URL |
 | `/buckets/:id/presigned/download` | POST | Get presigned download URL |
 
+**App Platform**
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/apps` | GET | List deployed apps |
+| `/apps` | POST | Deploy new app (image, port, env vars) |
+| `/apps/:id` | GET | Get app details with stats |
+| `/apps/:id` | PUT | Update and redeploy app |
+| `/apps/:id` | DELETE | Delete app |
+| `/apps/:id/start` | POST | Start app |
+| `/apps/:id/stop` | POST | Stop app |
+| `/apps/:id/logs` | GET | Get app logs |
+| `/apps/:id/domains` | POST | Add custom domain |
+
 See [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) for full API documentation.
 
 ## Pricing Plans
@@ -184,7 +197,8 @@ bunker-cloud/
 │   │   ├── auth/          # Authentication & user management
 │   │   ├── billing/       # Subscriptions & usage tracking
 │   │   ├── database/      # Managed database provisioning
-│   │   └── storage/       # S3-compatible object storage
+│   │   ├── storage/       # S3-compatible object storage
+│   │   └── apps/          # App platform & container deployment
 │   ├── docker-compose.yml
 │   └── .env.example
 ├── frontend/
@@ -250,11 +264,12 @@ npm test
 - [x] Plan-based Storage Limits
 - [x] Bandwidth Tracking
 
-### Phase 4 - App Platform 🚧
-- [ ] Docker Container Deployment
-- [ ] Auto-scaling
-- [ ] Custom Domains
-- [ ] SSL Certificates
+### Phase 4 - App Platform ✅
+- [x] Docker Container Deployment
+- [x] App Lifecycle Management (start/stop/restart)
+- [x] Custom Domains with Verification
+- [x] Plan-based Resource Limits
+- [x] Real-time Logs and Stats
 
 ### Phase 5 - Developer Experience
 - [ ] CLI Tool
