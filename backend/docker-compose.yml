@@ -147,7 +147,7 @@ services:
       - bunker-public
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.auth.rule=Host(`api.bunkercorpo.com`) && PathPrefix(`/auth`, `/api-keys`, `/organizations`, `/users`)"
+      - "traefik.http.routers.auth.rule=Host(`cloud-api.bunkercorpo.com`) && PathPrefix(`/auth`, `/api-keys`, `/organizations`, `/users`)"
       - "traefik.http.routers.auth.entrypoints=websecure"
       - "traefik.http.routers.auth.tls.certresolver=letsencrypt"
       - "traefik.http.services.auth.loadbalancer.server.port=3000"
@@ -159,7 +159,7 @@ services:
       # CORS
       - "traefik.http.middlewares.cors.headers.accesscontrolallowmethods=GET,POST,PUT,DELETE,OPTIONS"
       - "traefik.http.middlewares.cors.headers.accesscontrolallowheaders=Content-Type,Authorization,X-API-Key"
-      - "traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=https://cloud.bunkercorpo.com,https://bunkercorpo.com"
+      - "traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=https://cloud.bunkercorpo.com,https://bunkercorpo.com,https://cloud-api.bunkercorpo.com"
       - "traefik.http.middlewares.cors.headers.accesscontrolmaxage=100"
       - "traefik.http.middlewares.cors.headers.addvaryheader=true"
     healthcheck:
@@ -202,7 +202,7 @@ services:
       - bunker-public
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.billing.rule=Host(`api.bunkercorpo.com`) && PathPrefix(`/billing`, `/subscriptions`, `/invoices`, `/usage`)"
+      - "traefik.http.routers.billing.rule=Host(`cloud-api.bunkercorpo.com`) && PathPrefix(`/billing`, `/subscriptions`, `/invoices`, `/usage`)"
       - "traefik.http.routers.billing.entrypoints=websecure"
       - "traefik.http.routers.billing.tls.certresolver=letsencrypt"
       - "traefik.http.services.billing.loadbalancer.server.port=3000"

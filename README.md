@@ -55,7 +55,7 @@ Bunker Cloud empowers developers and businesses with reliable, scalable cloud in
                       │
 ┌─────────────────────▼───────────────────────────────────────┐
 │                     API Gateway                              │
-│              cloud-api.bunkercorpo.com                       │
+│            https://cloud-api.bunkercorpo.com                 │
 └───────┬─────────────┬─────────────┬─────────────────────────┘
         │             │             │
    ┌────▼────┐   ┌────▼────┐   ┌────▼────┐
