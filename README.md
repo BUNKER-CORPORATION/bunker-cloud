@@ -21,8 +21,8 @@ Bunker Cloud empowers developers and businesses with reliable, scalable cloud in
 |---------|--------|-------------|
 | **Authentication** | ✅ Live | JWT-based auth, user management, organizations, API keys |
 | **Billing** | ✅ Live | Subscription plans, usage tracking, invoices |
-| **Object Storage** | ✅ Live | S3-compatible storage powered by MinIO |
-| **Managed Databases** | 🚧 Coming Soon | PostgreSQL, MySQL, Redis, MongoDB |
+| **Object Storage** | ✅ Live | S3-compatible storage with presigned URLs, bucket management |
+| **Managed Databases** | ✅ Live | PostgreSQL, MySQL, Redis, MongoDB with automated provisioning |
 | **App Platform** | 🚧 Coming Soon | Deploy Docker containers with auto-scaling |
 | **Serverless Functions** | 📋 Planned | Run code without managing servers |
 | **Container Registry** | 📋 Planned | Private Docker image hosting |
@@ -50,23 +50,23 @@ Bunker Cloud empowers developers and businesses with reliable, scalable cloud in
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                      Load Balancer                          │
-│                    (Nginx + Caddy SSL)                      │
+│                  (Nginx + Let's Encrypt)                    │
 └─────────────────────┬───────────────────────────────────────┘
                       │
 ┌─────────────────────▼───────────────────────────────────────┐
 │                     API Gateway                              │
 │            https://cloud-api.bunkercorpo.com                 │
-└───────┬─────────────┬─────────────┬─────────────────────────┘
-        │             │             │
-   ┌────▼────┐   ┌────▼────┐   ┌────▼────┐
-   │  Auth   │   │ Billing │   │ Storage │
-   │ Service │   │ Service │   │ (MinIO) │
-   └────┬────┘   └────┬────┘   └─────────┘
-        │             │
-   ┌────▼─────────────▼────┐
-   │      PostgreSQL       │
-   │    (System Database)  │
-   └───────────────────────┘
+└───────┬─────────────┬─────────────┬─────────────┬───────────┘
+        │             │             │             │
+   ┌────▼────┐   ┌────▼────┐   ┌────▼────┐   ┌────▼────┐
+   │  Auth   │   │ Billing │   │Database │   │ Storage │
+   │ Service │   │ Service │   │ Service │   │ Service │
+   └────┬────┘   └────┬────┘   └────┬────┘   └────┬────┘
+        │             │             │             │
+   ┌────▼─────────────▼─────────────▼────┐   ┌────▼────┐
+   │           PostgreSQL                │   │  MinIO  │
+   │        (System Database)            │   │ Storage │
+   └─────────────────────────────────────┘   └─────────┘
 ```
 
 ## Tech Stack
@@ -127,14 +127,40 @@ Bunker Cloud empowers developers and businesses with reliable, scalable cloud in
 
 ### API Endpoints
 
+**Authentication**
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/auth/register` | POST | Create new user account |
 | `/auth/login` | POST | Authenticate user |
 | `/auth/refresh` | POST | Refresh access token |
+| `/health` | GET | Service health check |
+
+**Billing**
+| Endpoint | Method | Description |
+|----------|--------|-------------|
 | `/billing/plans` | GET | List subscription plans |
 | `/billing/subscriptions` | GET | Get user subscriptions |
-| `/health` | GET | Service health check |
+| `/usage` | GET | Get usage statistics |
+
+**Managed Databases**
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/databases` | GET | List database instances |
+| `/databases` | POST | Create new database (PostgreSQL, MySQL, Redis, MongoDB) |
+| `/databases/:id` | GET | Get database details with connection string |
+| `/databases/:id` | DELETE | Delete database instance |
+| `/databases/:id/start` | POST | Start database container |
+| `/databases/:id/stop` | POST | Stop database container |
+
+**Object Storage**
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/buckets` | GET | List storage buckets |
+| `/buckets` | POST | Create new bucket |
+| `/buckets/:id` | DELETE | Delete bucket |
+| `/buckets/:id/objects` | GET | List objects in bucket |
+| `/buckets/:id/presigned/upload` | POST | Get presigned upload URL |
+| `/buckets/:id/presigned/download` | POST | Get presigned download URL |
 
 See [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) for full API documentation.
 
@@ -155,8 +181,10 @@ See [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) for full API documentatio
 bunker-cloud/
 ├── backend/
 │   ├── services/
-│   │   ├── auth/          # Authentication service
-│   │   └── billing/       # Billing service
+│   │   ├── auth/          # Authentication & user management
+│   │   ├── billing/       # Subscriptions & usage tracking
+│   │   ├── database/      # Managed database provisioning
+│   │   └── storage/       # S3-compatible object storage
 │   ├── docker-compose.yml
 │   └── .env.example
 ├── frontend/
@@ -205,28 +233,36 @@ npm test
 ### Phase 1 - Core Platform ✅
 - [x] Authentication & Authorization
 - [x] Billing & Subscriptions
-- [x] Object Storage (MinIO)
 - [x] Frontend Landing Page
+- [x] API Gateway (Nginx)
 
-### Phase 2 - Database Services 🚧
-- [ ] PostgreSQL Provisioning
-- [ ] MySQL Support
-- [ ] Redis Managed Instances
-- [ ] Connection Pooling
+### Phase 2 - Managed Databases ✅
+- [x] PostgreSQL Provisioning
+- [x] MySQL Support
+- [x] Redis Managed Instances
+- [x] MongoDB Support
+- [x] Automated Container Management
 
-### Phase 3 - App Platform
+### Phase 3 - Object Storage ✅
+- [x] S3-compatible Storage (MinIO)
+- [x] Bucket Management
+- [x] Presigned URLs for Upload/Download
+- [x] Plan-based Storage Limits
+- [x] Bandwidth Tracking
+
+### Phase 4 - App Platform 🚧
 - [ ] Docker Container Deployment
 - [ ] Auto-scaling
 - [ ] Custom Domains
 - [ ] SSL Certificates
 
-### Phase 4 - Developer Experience
+### Phase 5 - Developer Experience
 - [ ] CLI Tool
 - [ ] Official SDKs
 - [ ] GitHub Integration
 - [ ] Webhooks
 
-### Phase 5 - Advanced Features
+### Phase 6 - Advanced Features
 - [ ] Serverless Functions
 - [ ] Container Registry
 - [ ] VPN / Private Networking
