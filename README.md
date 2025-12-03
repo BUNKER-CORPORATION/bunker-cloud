@@ -32,8 +32,8 @@ Bunker Cloud empowers developers and businesses with reliable, scalable cloud in
 | Tool | Status | Description |
 |------|--------|-------------|
 | **REST API** | ✅ Live | Full API access to all services |
-| **CLI** | 📋 Planned | Command-line interface for Bunker Cloud |
-| **SDKs** | 📋 Planned | Official libraries for popular languages |
+| **CLI** | ✅ Live | Command-line interface for Bunker Cloud |
+| **SDKs** | ✅ Live | Official TypeScript/JavaScript SDK |
 | **CI/CD Integration** | 📋 Planned | GitHub Actions, GitLab CI support |
 
 ### Platform Features
@@ -177,6 +177,50 @@ Bunker Cloud empowers developers and businesses with reliable, scalable cloud in
 
 See [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) for full API documentation.
 
+## CLI & SDK
+
+### CLI Installation
+
+```bash
+npm install -g bunker-cli
+
+# Login
+bunker auth login
+
+# Deploy an app
+bunker apps create --name myapp --image nginx:alpine --port 80
+
+# Create a database
+bunker databases create --name mydb --engine postgresql
+```
+
+See [cli/README.md](./cli/README.md) for full CLI documentation.
+
+### SDK Installation
+
+```bash
+npm install @bunker-cloud/sdk
+```
+
+```typescript
+import BunkerCloud from '@bunker-cloud/sdk';
+
+const bunker = new BunkerCloud({
+  accessToken: 'your-access-token',
+});
+
+// List apps
+const apps = await bunker.apps.list();
+
+// Create a database
+const db = await bunker.databases.create({
+  name: 'my-database',
+  engine: 'postgresql',
+});
+```
+
+See [sdk/README.md](./sdk/README.md) for full SDK documentation.
+
 ## Pricing Plans
 
 | Plan | Price | Storage | Databases | Apps |
@@ -201,6 +245,15 @@ bunker-cloud/
 │   │   └── apps/          # App platform & container deployment
 │   ├── docker-compose.yml
 │   └── .env.example
+├── cli/                   # CLI Tool (bunker-cli)
+│   ├── src/
+│   │   ├── commands/      # CLI commands
+│   │   └── lib/           # Utilities & API client
+│   └── package.json
+├── sdk/                   # TypeScript/JavaScript SDK
+│   ├── src/
+│   │   └── index.ts       # SDK implementation
+│   └── package.json
 ├── frontend/
 │   ├── src/
 │   │   ├── components/    # React components
@@ -271,9 +324,9 @@ npm test
 - [x] Plan-based Resource Limits
 - [x] Real-time Logs and Stats
 
-### Phase 5 - Developer Experience
-- [ ] CLI Tool
-- [ ] Official SDKs
+### Phase 5 - Developer Experience ✅
+- [x] CLI Tool (bunker-cli)
+- [x] Official TypeScript/JavaScript SDK (@bunker-cloud/sdk)
 - [ ] GitHub Integration
 - [ ] Webhooks
 
