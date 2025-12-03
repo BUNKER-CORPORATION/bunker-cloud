@@ -316,3 +316,50 @@ services:
         reservations:
           cpus: '0.25'
           memory: 256M
+
+  # ===========================================
+  # STORAGE SERVICE - Object Storage API
+  # ===========================================
+  storage-service:
+    build:
+      context: ./services/storage
+      dockerfile: Dockerfile
+    container_name: bunker-storage
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:3004:3000"
+    depends_on:
+      postgres-system:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    networks:
+      - bunker-internal
+      - bunker-public
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.storage.rule=Host(`cloud-api.bunkercorpo.com`) && PathPrefix(`/buckets`, `/storage`)"
+      - "traefik.http.routers.storage.entrypoints=websecure"
+      - "traefik.http.routers.storage.tls.certresolver=letsencrypt"
+      - "traefik.http.services.storage.loadbalancer.server.port=3000"
+      - "traefik.http.routers.storage.middlewares=rate-limit,cors"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
