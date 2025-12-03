@@ -269,3 +269,50 @@ services:
         reservations:
           cpus: '0.25'
           memory: 512M
+
+  # ===========================================
+  # DATABASE SERVICE - Managed Databases
+  # ===========================================
+  database-service:
+    build:
+      context: ./services/database
+      dockerfile: Dockerfile
+    container_name: bunker-database
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:3003:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      postgres-system:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    networks:
+      - bunker-internal
+      - bunker-public
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.database.rule=Host(`cloud-api.bunkercorpo.com`) && PathPrefix(`/databases`)"
+      - "traefik.http.routers.database.entrypoints=websecure"
+      - "traefik.http.routers.database.tls.certresolver=letsencrypt"
+      - "traefik.http.services.database.loadbalancer.server.port=3000"
+      - "traefik.http.routers.database.middlewares=rate-limit,cors"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
