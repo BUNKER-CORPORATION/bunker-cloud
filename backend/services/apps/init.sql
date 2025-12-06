@@ -160,3 +160,102 @@ BEGIN
     DELETE FROM app_access_logs WHERE timestamp < NOW() - INTERVAL '30 days';
 END;
 $$ LANGUAGE plpgsql;
+
+-- =============================================
+-- GitHub Integration Tables
+-- =============================================
+
+-- GitHub repository connections
+CREATE TABLE IF NOT EXISTS github_connections (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    app_id UUID NOT NULL UNIQUE REFERENCES apps(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id),
+    repo_owner VARCHAR(100) NOT NULL,
+    repo_name VARCHAR(100) NOT NULL,
+    repo_url VARCHAR(512) NOT NULL,
+    branch VARCHAR(100) DEFAULT 'main',
+    auto_deploy BOOLEAN DEFAULT true,
+    dockerfile_path VARCHAR(256) DEFAULT 'Dockerfile',
+    build_context VARCHAR(256) DEFAULT '.',
+    webhook_secret VARCHAR(128) NOT NULL,
+    webhook_verified BOOLEAN DEFAULT false,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- GitHub deployments history
+CREATE TABLE IF NOT EXISTS github_deployments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    connection_id UUID NOT NULL REFERENCES github_connections(id) ON DELETE CASCADE,
+    app_id UUID NOT NULL REFERENCES apps(id) ON DELETE CASCADE,
+    status VARCHAR(20) NOT NULL CHECK (status IN ('pending', 'building', 'deploying', 'success', 'failed', 'cancelled')),
+    trigger VARCHAR(20) DEFAULT 'push' CHECK (trigger IN ('push', 'manual', 'pull_request', 'tag')),
+    commit_sha VARCHAR(40),
+    commit_message TEXT,
+    commit_author VARCHAR(100),
+    branch VARCHAR(100),
+    image_tag VARCHAR(256),
+    container_id VARCHAR(128),
+    build_logs TEXT,
+    error_message TEXT,
+    started_at TIMESTAMP WITH TIME ZONE,
+    completed_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_github_connections_app ON github_connections(app_id);
+CREATE INDEX IF NOT EXISTS idx_github_connections_user ON github_connections(user_id);
+CREATE INDEX IF NOT EXISTS idx_github_deployments_connection ON github_deployments(connection_id);
+CREATE INDEX IF NOT EXISTS idx_github_deployments_app ON github_deployments(app_id);
+CREATE INDEX IF NOT EXISTS idx_github_deployments_created ON github_deployments(created_at DESC);
+
+-- =============================================
+-- Webhooks Tables
+-- =============================================
+
+-- User webhooks
+CREATE TABLE IF NOT EXISTS webhooks (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id),
+    url VARCHAR(2048) NOT NULL,
+    events JSONB NOT NULL DEFAULT '[]',
+    secret VARCHAR(128) NOT NULL,
+    enabled BOOLEAN DEFAULT true,
+    description VARCHAR(255),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Webhook delivery history
+CREATE TABLE IF NOT EXISTS webhook_deliveries (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    webhook_id UUID NOT NULL REFERENCES webhooks(id) ON DELETE CASCADE,
+    event VARCHAR(50) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'success', 'failed')),
+    request_payload JSONB,
+    response_code INTEGER,
+    response_body TEXT,
+    response_time_ms INTEGER,
+    error_message TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_webhooks_user ON webhooks(user_id);
+CREATE INDEX IF NOT EXISTS idx_webhooks_enabled ON webhooks(enabled);
+CREATE INDEX IF NOT EXISTS idx_webhook_deliveries_webhook ON webhook_deliveries(webhook_id);
+CREATE INDEX IF NOT EXISTS idx_webhook_deliveries_created ON webhook_deliveries(created_at DESC);
+
+-- Trigger to update webhook updated_at
+DROP TRIGGER IF EXISTS trigger_webhook_updated ON webhooks;
+CREATE TRIGGER trigger_webhook_updated
+    BEFORE UPDATE ON webhooks
+    FOR EACH ROW
+    EXECUTE FUNCTION update_app_timestamp();
+
+-- Cleanup old webhook deliveries (keep 30 days)
+CREATE OR REPLACE FUNCTION cleanup_old_webhook_deliveries()
+RETURNS void AS $$
+BEGIN
+    DELETE FROM webhook_deliveries WHERE created_at < NOW() - INTERVAL '30 days';
+END;
+$$ LANGUAGE plpgsql;

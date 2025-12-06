@@ -69,4 +69,7 @@ export const config = {
 
   // Base domain for apps
   baseDomain: process.env.APPS_BASE_DOMAIN || 'apps.bunkercorpo.com',
+
+  // Webhook base URL (for GitHub integration)
+  webhookBaseUrl: process.env.WEBHOOK_BASE_URL || 'https://cloud-api.bunkercorpo.com',
 };
