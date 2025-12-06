@@ -24,8 +24,8 @@ Bunker Cloud empowers developers and businesses with reliable, scalable cloud in
 | **Object Storage** | ✅ Live | S3-compatible storage with presigned URLs, bucket management |
 | **Managed Databases** | ✅ Live | PostgreSQL, MySQL, Redis, MongoDB with automated provisioning |
 | **App Platform** | ✅ Live | Deploy Docker containers with custom domains and resource limits |
-| **Serverless Functions** | 📋 Planned | Run code without managing servers |
-| **Container Registry** | 📋 Planned | Private Docker image hosting |
+| **Serverless Functions** | ✅ Live | Run code without managing servers (Node.js, Python, Go, Rust) |
+| **Container Registry** | ✅ Live | Private Docker image hosting with Docker V2 API |
 
 ### Developer Tools
 
@@ -34,7 +34,7 @@ Bunker Cloud empowers developers and businesses with reliable, scalable cloud in
 | **REST API** | ✅ Live | Full API access to all services |
 | **CLI** | ✅ Live | Command-line interface for Bunker Cloud |
 | **SDKs** | ✅ Live | Official TypeScript/JavaScript SDK |
-| **CI/CD Integration** | 📋 Planned | GitHub Actions, GitLab CI support |
+| **GitHub Integration** | ✅ Live | Auto-deploy on push, webhook notifications |
 
 ### Platform Features
 
@@ -327,12 +327,12 @@ npm test
 ### Phase 5 - Developer Experience ✅
 - [x] CLI Tool (bunker-cli)
 - [x] Official TypeScript/JavaScript SDK (@bunker-cloud/sdk)
-- [ ] GitHub Integration
-- [ ] Webhooks
+- [x] GitHub Integration (auto-deploy on push)
+- [x] Webhooks (event notifications)
 
-### Phase 6 - Advanced Features
-- [ ] Serverless Functions
-- [ ] Container Registry
+### Phase 6 - Advanced Features ✅
+- [x] Serverless Functions (Node.js, Python, Go, Rust)
+- [x] Container Registry (Docker V2 API compatible)
 - [ ] VPN / Private Networking
 - [ ] AI Inference API
 
